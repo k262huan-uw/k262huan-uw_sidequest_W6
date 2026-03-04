@@ -23,6 +23,9 @@ let player, sensor;
 let bgLayers = [];
 let playerImg, bgForeImg, bgMidImg, bgFarImg;
 
+// added sound
+let growlSound;
+
 let playerAnis = {
   idle: { row: 0, frames: 4, frameDelay: 10 },
   run: { row: 1, frames: 4, frameDelay: 3 },
@@ -31,7 +34,12 @@ let playerAnis = {
 };
 
 let ground, groundDeep, platformsL, platformsR, wallsL, wallsR;
-let groundTile1Img, groundTile2Img, platforTileLImg, platforTileRImg, wallTileLImg, wallTileRImg;
+let groundTile1Img,
+  groundTile2Img,
+  platforTileLImg,
+  platforTileRImg,
+  wallTileLImg,
+  wallTileRImg;
 
 //let bgFarX, bgMidX, bgForeX;
 
@@ -95,6 +103,9 @@ function preload() {
   platformTileRImg = loadImage("assets/platformRC.png");
   wallTileLImg = loadImage("assets/wallL.png");
   wallTileRImg = loadImage("assets/wallR.png");
+
+  // --- SOUND ---
+  growlSound = loadSound("assets/growl.mp3");
 }
 
 function setup() {
@@ -202,7 +213,11 @@ function draw() {
 
   // camera follow player
   let targetX = constrain(player.x, VIEWW / 2, LEVELW - VIEWW / 2 - TILE_W / 2);
-  let targetY = constrain(player.y, VIEWH / 2 - TILE_H * 2, LEVELH - VIEWH / 2 - TILE_H);
+  let targetY = constrain(
+    player.y,
+    VIEWH / 2 - TILE_H * 2,
+    LEVELH - VIEWH / 2 - TILE_H,
+  );
 
   // smooth + snap
   camera.x = Math.round(lerp(camera.x || targetX, targetX, 0.1));
@@ -210,7 +225,10 @@ function draw() {
 
   // --- PLAYER CONTROLS ---
   // first check to see if the player is on the ground or a platform
-  let grounded = sensor.overlapping(ground) || sensor.overlapping(platformsL) || sensor.overlapping(platformsR);
+  let grounded =
+    sensor.overlapping(ground) ||
+    sensor.overlapping(platformsL) ||
+    sensor.overlapping(platformsR);
 
   // -- ATTACK INPUT --
   if (grounded && !attacking && kb.presses("space")) {
@@ -312,7 +330,10 @@ function draw() {
 
 function applyIntegerScale() {
   const c = document.querySelector("canvas");
-  const scale = Math.max(1, Math.floor(Math.min(window.innerWidth / VIEWW, window.innerHeight / VIEWH)));
+  const scale = Math.max(
+    1,
+    Math.floor(Math.min(window.innerWidth / VIEWW, window.innerHeight / VIEWH)),
+  );
   c.style.width = VIEWW * scale + "px";
   c.style.height = VIEWH * scale + "px";
 }
