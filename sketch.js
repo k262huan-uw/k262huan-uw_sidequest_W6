@@ -238,6 +238,7 @@ function draw() {
     player.ani.frame = 0;
     player.ani = "attack";
     player.ani.play(); // plays once to end
+    growlSound.play();
   }
 
   // -- JUMP --
