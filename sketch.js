@@ -238,7 +238,7 @@ function draw() {
     player.ani.frame = 0;
     player.ani = "attack";
     player.ani.play(); // plays once to end
-    growlSound.play();
+    growlSound.play(); // (dogwolf123, 2026)
   }
 
   // -- JUMP --
